@@ -46,3 +46,5 @@ proc finish {} {
 $ns at 5.1 "finish"
 
 $ns run 
+
+# grep -c "d" out.trgi
