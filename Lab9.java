@@ -30,14 +30,14 @@ public class Lab9{
             if(avg < minth){
                 count = -1;
 
-                if(queuesize < cap){
+                if(queuesize <= cap){
                     queuesize++;
                     System.out.println("Packet accepted | queue size = " + queuesize);
                 }else{
                  System.out.println("Packet is dropped because Queue is full");   
                 }
             }
-            else if(avg > maxth){
+            else if(avg >= maxth){
                 count = -1;
                 System.out.println("Packet dropped because max threshold");
             }
