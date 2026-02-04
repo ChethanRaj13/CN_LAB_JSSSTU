@@ -1,53 +1,64 @@
 import java.util.*;
 
-public class Lab9 {
-    public static void main(String[] args) {
+public class Lab9{
+    public static void main(String args[]){
         Scanner sc = new Scanner(System.in);
         Random rand = new Random();
 
-        System.out.println("Enter the Queue Size: ");
+        System.out.println("Enter the capacity of the Queue");
         int cap = sc.nextInt();
 
-        System.out.println("Enter the max Threshole: ");
-        int maxth = sc.nextInt();
-        System.out.println("Enter the min Threshole: ");
+        System.out.println("Enter the min Threshold:");
         int minth = sc.nextInt();
 
-        System.out.println("Enter the number of packets: ");
-        int n = sc.nextInt();
+        System.out.println("Enter the maximum threshold");
+        int maxth = sc.nextInt();
 
-        int que_size = 0;
+        System.out.println("Enter the number of Packets: ");
+        int n = sc.nextInt();
+        
+        int queuesize = 0;
+        
+        double avg = 0.0;
+        double wq = 0.002;
+        double maxp = 0.1;
+        int count = -1;
 
         for(int i = 0; i < n; i++){
-            System.out.println("Enter the packects arrived: ");
-            int pkt = sc.nextInt();
+            avg = (1-wq) * avg + wq * queuesize;
 
-            for(int j = 0; j < pkt; j++){
-                if(que_size <= minth){
-                   que_size++; 
-                   System.out.println("packet accepted and queue size: " + que_size);
-                }
-                else if(que_size > minth && que_size <= maxth){
-                    double prob = (que_size - minth) / (maxth - minth);
-                    double drop = rand.nextDouble();
-                    if(prob > drop){
-                        System.out.println("packet has been dropped");
-                        que_size--;
-                    }
-                    else{
-                        que_size++;
-                        System.out.println("packet accepted and queue size: " + que_size);
-                    }
-                }
-                else{
-                    System.out.println("packet has been dropped");
-                }
+            if(avg < minth){
+                count = -1;
 
-                if(que_size > cap){
-                    que_size = cap;
+                if(queuesize < cap){
+                    queuesize++;
+                    System.out.println("Packet accepted | queue size = " + queuesize);
+                }else{
+                 System.out.println("Packet is dropped because Queue is full");   
+                }
+            }
+            else if(avg > maxth){
+                count = -1;
+                System.out.println("Packet dropped because max threshold");
+            }
+            else{
+                count++;
+                double pb = maxp * (avg - minth) / (maxth - minth);
+                double pa = pb / (1 - count * pb);
+                
+                if(rand.nextDouble() < pa){
+                    count = 0;
+                    System.out.println("Dropped due to random early detection");
+                } else{
+                    if(queuesize < cap){
+                        queuesize++;
+                        System.out.println("Packet accepted | Queue size = " + queuesize);
+                    } else{
+                        System.out.println("Packet is dropped because Queue is full");
+                    }
                 }
             }
         }
-        
+        sc.close
     }
 }
