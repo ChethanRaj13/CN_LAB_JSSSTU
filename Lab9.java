@@ -50,7 +50,7 @@ public class Lab9{
                     count = 0;
                     System.out.println("Dropped due to random early detection");
                 } else{
-                    if(queuesize < cap){
+                    if(queuesize <= cap){
                         queuesize++;
                         System.out.println("Packet accepted | Queue size = " + queuesize);
                     } else{
